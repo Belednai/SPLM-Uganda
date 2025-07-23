@@ -41,13 +41,13 @@ const ugandaChapterLeaders = [
   {
     name: "Ms. Grace Akello",
     role: "Secretary General",
-    contact: "+256 700 333 444",
+    contact: "+256784772954",
     photo: splmLogo,
   },
   {
     name: "Mr. Samuel Deng",
     role: "Treasurer",
-    contact: "+256 700 555 666",
+    contact: "+256784772954",
     photo: splmLogo,
   },
 ];
@@ -113,7 +113,8 @@ const LeadershipSection = () => {
                 </CardHeader>
                 <CardContent className="text-center pb-6">
                   <div className="text-xs text-muted-foreground mb-2">
-                    <User className="w-3 h-3 inline mr-1 text-primary" /> {leader.contact}
+                    <User className="w-3 h-3 inline mr-1 text-primary" />
+                    <a href={`tel:${leader.contact}`} className="hover:underline">{leader.contact}</a>
                   </div>
                 </CardContent>
               </Card>

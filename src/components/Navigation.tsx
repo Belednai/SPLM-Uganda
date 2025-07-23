@@ -21,8 +21,8 @@ const Navigation = () => {
               alt="SPLM Uganda Chapter" 
               className="h-10 w-10 object-contain"
             />
-            <div className="hidden sm:block">
-              <h1 className="text-lg font-bold text-primary">SPLM Uganda</h1>
+            <div>
+              <h1 className="text-lg font-bold text-primary">SPLM - Uganda Chapter</h1>
               <p className="text-xs text-muted-foreground">Liberation Movement</p>
             </div>
           </Link>
