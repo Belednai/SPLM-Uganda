@@ -5,6 +5,7 @@ import salvaKiir from "@/assets/H.E Gen. Salva Kiir Mayardit.jpg";
 import bolMel from "@/assets/H.E Dr. Bol Mel.png";
 import paulLogale from "@/assets/Prof. Paul Logale.jpg";
 import splmLogo from "@/assets/splm-uganda-logo.png";
+import dhieuSimonChol from "@/assets/CDE Dhieu Simon Chol.jpg";
 
 const splmLeaders = [
   {
@@ -32,10 +33,10 @@ const splmLeaders = [
 
 const ugandaChapterLeaders = [
   {
-    name: "Hon. Peter Lado",
+    name: "CDE. Dhieu Simon Chol",
     role: "Chairperson, SPLM Uganda Chapter",
-    contact: "+256 700 111 222",
-    photo: splmLogo,
+    contact: "+256784772954",
+    photo: dhieuSimonChol,
   },
   {
     name: "Ms. Grace Akello",

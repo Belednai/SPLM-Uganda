@@ -122,6 +122,9 @@ const Footer = () => {
             <p className="text-primary-foreground/60 text-xs">
               Founded May 16, 1983 | John Garang de Mabior & Joseph Oduho | Unity, Peace, Progress
             </p>
+            <p className="text-primary-foreground/60 text-xs mt-2">
+              Developed by <a href="https://www.belednai.com" target="_blank" rel="noopener noreferrer" className="underline hover:text-secondary">Belednai Technology</a>
+            </p>
           </div>
         </div>
       </div>
