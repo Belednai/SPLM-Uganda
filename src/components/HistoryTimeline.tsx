@@ -52,7 +52,7 @@ const HistoryTimeline = () => {
       year: "2011",
       date: "July 9",
       title: "South Sudan Independence",
-      description: "South Sudan becomes independent with SPLM as the ruling party after a successful referendum (98.83% voted for independence). SPLM branches in Sudan reform into SPLM-North to continue struggle in Sudan.",
+      description: "South Sudan becomes independent with SPLM as the ruling party after a successful referendum (98.83% voted for independence) through the leadership of H.E Gen. Salva Kiir Mayardit. SPLM branches in Sudan reform into SPLM-North to continue struggle in Sudan.",
       icon: Globe,
       highlight: true
     },
