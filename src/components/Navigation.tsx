@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Menu, X, UserPlus, Home, Settings } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
-import splmLogo from "@/assets/splm-uganda-logo.png";
+import logo from "@/assets/logo.png";
 
 const Navigation = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -17,7 +17,7 @@ const Navigation = () => {
           {/* Logo and Brand */}
           <Link to="/" className="flex items-center space-x-3">
             <img 
-              src={splmLogo} 
+              src={logo} 
               alt="SPLM Uganda Chapter" 
               className="h-10 w-10 object-contain"
             />
@@ -57,13 +57,13 @@ const Navigation = () => {
               <Button variant="splm" size="sm">
                 <UserPlus className="w-4 h-4" />
                 Join Now
-              </Button>
+            </Button>
             </Link>
             <Link to="/admin/login">
               <Button variant="outline" size="sm">
-                <Settings className="w-4 h-4" />
-                Admin
-              </Button>
+              <Settings className="w-4 h-4" />
+              Admin
+            </Button>
             </Link>
           </div>
 

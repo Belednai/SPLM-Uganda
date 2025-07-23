@@ -1,6 +1,6 @@
 import { Calendar, Users, Award, Globe, Shield, Target, Handshake } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
-import splmFounders from "@/assets/splm-founders.jpg";
+import drJohnGarang from "@/assets/Dr. John Garang De Mabior.jpeg";
 
 const HistoryTimeline = () => {
   const timelineEvents = [
@@ -112,8 +112,8 @@ const HistoryTimeline = () => {
                 </div>
                 <div className="relative h-64 md:h-auto">
                   <img 
-                    src={splmFounders} 
-                    alt="SPLM Founders - Dr. John Garang de Mabior and Joseph Oduho" 
+                    src={drJohnGarang} 
+                    alt="Dr. John Garang de Mabior" 
                     className="w-full h-full object-cover"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-primary/20 to-transparent"></div>

@@ -43,20 +43,20 @@ const Hero = () => {
             {/* Call to Action Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 items-center lg:items-start">
               <Link to="/register">
-                <Button variant="hero" size="lg" className="w-full sm:w-auto">
-                  <UserPlus className="w-5 h-5" />
-                  Become a Member
-                </Button>
+              <Button variant="hero" size="lg" className="w-full sm:w-auto">
+                <UserPlus className="w-5 h-5" />
+                Become a Member
+              </Button>
               </Link>
               <a href="#history">
-                <Button 
-                  variant="outline" 
-                  size="lg" 
-                  className="w-full sm:w-auto bg-white/10 border-white/30 text-white hover:bg-white/20 hover:text-white"
-                >
-                  <BookOpen className="w-5 h-5" />
-                  Learn Our History
-                </Button>
+              <Button 
+                variant="outline" 
+                size="lg" 
+                className="w-full sm:w-auto bg-white/10 border-white/30 text-white hover:bg-white/20 hover:text-white"
+              >
+                <BookOpen className="w-5 h-5" />
+                Learn Our History
+              </Button>
               </a>
             </div>
 
@@ -97,9 +97,9 @@ const Hero = () => {
                   </div>
                 </div>
                 <Link to="/register">
-                  <Button variant="splm" className="w-full" size="lg">
-                    Start Registration
-                  </Button>
+                <Button variant="splm" className="w-full" size="lg">
+                  Start Registration
+                </Button>
                 </Link>
               </div>
             </div>

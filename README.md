@@ -1,4 +1,6 @@
-# Welcome to your Lovable project
+# SPLM Uganda Chapter Web Application
+
+This is the official web application for the SPLM Uganda Chapter.
 
 ## Project info
 

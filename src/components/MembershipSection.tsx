@@ -276,16 +276,16 @@ const MembershipSection = () => {
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link to="/register">
-                  <Button variant="hero" size="lg">
-                    <UserPlus className="w-5 h-5" />
-                    Start Registration
-                  </Button>
+                <Button variant="hero" size="lg">
+                  <UserPlus className="w-5 h-5" />
+                  Start Registration
+                </Button>
                 </Link>
                 <a href="#history">
-                  <Button variant="outline" size="lg">
-                    <Clock className="w-5 h-5" />
-                    Learn More
-                  </Button>
+                <Button variant="outline" size="lg">
+                  <Clock className="w-5 h-5" />
+                  Learn More
+                </Button>
                 </a>
               </div>
             </CardContent>
