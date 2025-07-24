@@ -5,12 +5,12 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-// Generate unique SPLM-UG ID in format SPLM-UG-XXXXXX
+// Generate unique SPLM-UGC ID in format SPLM-UGC-XXXXXX
 export function generateSplmUgId(): string {
   // Generate 6-digit number with leading zeros
   const randomNum = Math.floor(Math.random() * 1000000);
   const paddedNum = randomNum.toString().padStart(6, '0');
-  return `SPLM-UG-${paddedNum}`;
+  return `SPLM-UGC-${paddedNum}`;
 }
 
 // Create a red background placeholder image as data URL

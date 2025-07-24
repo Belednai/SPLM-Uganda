@@ -316,7 +316,7 @@ const Registration = () => {
                         <div className="w-32 h-40 border-2 border-dashed border-primary/30 rounded-lg flex items-center justify-center overflow-hidden bg-red-500/10 relative">
                           {photoPreview ? (
                             <>
-                              <img src={photoPreview} alt="Preview" className="w-full h-full object-cover" />
+                            <img src={photoPreview} alt="Preview" className="w-full h-full object-cover" />
                               {!photoFile && (
                                 <div className="absolute inset-0 bg-red-500/20 flex items-center justify-center">
                                   <div className="text-center">

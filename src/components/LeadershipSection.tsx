@@ -35,20 +35,8 @@ const ugandaChapterLeaders = [
   {
     name: "CDE. Dhieu Simon Chol",
     role: "Chairperson, SPLM Uganda Chapter",
-    contact: "+256745356818",
+    contact: "+256751811010",
     photo: dhieuSimonChol,
-  },
-  {
-    name: "Ms. Grace Akello",
-    role: "Secretary General",
-    contact: "+256751811010",
-    photo: splmLogo,
-  },
-  {
-    name: "Mr. Samuel Deng",
-    role: "Treasurer",
-    contact: "+256751811010",
-    photo: splmLogo,
   },
 ];
 

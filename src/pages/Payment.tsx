@@ -25,6 +25,8 @@ import Footer from "@/components/Footer";
 import { Link, useNavigate } from "react-router-dom";
 import { memberStorage } from "@/lib/utils";
 import splmLogo from "@/assets/splm-uganda-logo.png";
+import flagLogo from "@/assets/flag-logo.png";
+import logo from "@/assets/logo.png";
 
 const Payment = () => {
   const [selectedMethod, setSelectedMethod] = useState<string>("");
@@ -116,9 +118,9 @@ const Payment = () => {
 
   const selectedPaymentMethod = paymentMethods.find(method => method.id === selectedMethod);
 
-  // ID Preview Component
+    // ID Preview Component
   const IDPreview = ({ memberData }: { memberData: any }) => (
-    <Card className="shadow-2xl border-primary/20 mb-8">
+    <Card className="shadow-2xl border-gray-300 mb-8">
       <CardHeader>
         <CardTitle className="flex items-center space-x-3 text-center justify-center">
           <IdCard className="w-5 h-5 text-primary" />
@@ -133,77 +135,105 @@ const Payment = () => {
       </CardHeader>
       <CardContent>
         <div className="flex justify-center">
-          <div className="w-96 h-64 bg-gradient-to-br from-primary/5 via-background to-secondary/5 border-2 border-primary/20 rounded-lg overflow-hidden">
-            {/* Header */}
-            <div className="bg-primary text-primary-foreground p-3 flex items-center space-x-3">
-              <img src={splmLogo} alt="SPLM" className="w-8 h-8 object-contain" />
-              <div>
-                <h3 className="font-bold text-sm">SPLM UGANDA CHAPTER</h3>
-                <p className="text-xs opacity-90">Member Identification Card</p>
+          <div className="w-[400px] h-[250px] bg-white border-2 border-gray-400 rounded-lg overflow-hidden relative shadow-lg">
+            {/* Header with Logos */}
+            <div className="bg-gradient-to-r from-red-600 to-red-700 text-white py-1.5 px-2 flex flex-col items-center relative">
+              {/* Corner Logos */}
+              <div className="absolute left-6 top-1/2 transform -translate-y-1/2">
+                <img src={logo} alt="SPLM Logo" className="w-12 h-12 object-contain filter brightness-0 invert" />
+              </div>
+              <div className="absolute right-6 top-1/2 transform -translate-y-1/2">
+                <img src={logo} alt="SPLM Logo" className="w-12 h-12 object-contain filter brightness-0 invert" />
+              </div>
+              
+              {/* Center Content */}
+              <div className="flex flex-col items-center space-y-0.5">
+                {/* Flag at top */}
+                <img src={flagLogo} alt="SPLM Flag" className="w-10 h-6 object-contain" />
+                
+                {/* Text below flag */}
+                <div className="text-center">
+                  <h3 className="font-bold text-xs leading-tight">SPLM UGANDA CHAPTER</h3>
+                  <p className="text-xs opacity-90 leading-none">Member Identification Card</p>
+                </div>
               </div>
             </div>
 
-                         {/* Member Info */}
-             <div className="p-4 flex space-x-4 h-full">
-               {/* Photo */}
-               <div className="w-20 h-24 bg-red-500 rounded-lg overflow-hidden border-2 border-red-300 flex-shrink-0 relative">
-                 {memberData.photo ? (
-                   <>
-                     <img 
-                       src={memberData.photo} 
-                       alt={`${memberData.surname} ${memberData.otherNames}`}
-                       className="w-full h-full object-cover"
-                     />
-                     <div className="absolute inset-0 bg-red-500/10 pointer-events-none"></div>
-                   </>
-                 ) : (
-                   <div className="w-full h-full bg-red-500 flex items-center justify-center">
-                     <User className="w-8 h-8 text-white" />
-                   </div>
-                 )}
-               </div>
-
-              {/* Details */}
-              <div className="flex-1 space-y-2">
-                <div>
-                  <h4 className="font-bold text-lg text-foreground leading-tight">
-                    {memberData.surname} {memberData.otherNames}
-                  </h4>
-                  <p className="text-xs text-muted-foreground capitalize">
-                    {memberData.membershipCategory} Member
-                  </p>
-                </div>
-                
-                <div className="space-y-1 text-xs">
-                  <div className="flex items-center space-x-2">
-                    <IdCard className="w-3 h-3 text-primary" />
-                    <span className="font-mono font-bold text-primary">
-                      {memberData.memberId}
-                    </span>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <User className="w-3 h-3 text-muted-foreground" />
-                    <span>Sex: {memberData.sex}</span>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <span className="text-muted-foreground">Born: {memberData.dateOfBirth}</span>
-                  </div>
-                </div>
-
-                <div className="flex items-center space-x-2">
-                  <Badge variant="default" className="text-xs">
-                    Active
-                  </Badge>
-                  <span className="text-xs text-muted-foreground">
-                    Valid from {new Date().toLocaleDateString()}
-                  </span>
+            {/* Main Content - Two Column Layout */}
+            <div className="p-3 bg-gray-50 grid grid-cols-3 gap-4 h-full">
+              {/* Left Column - Photo */}
+              <div className="col-span-1 flex justify-center">
+                <div className="w-24 h-28 bg-red-600 rounded border-2 border-red-700 overflow-hidden">
+                  {memberData.photo ? (
+                    <img 
+                      src={memberData.photo} 
+                      alt={`${memberData.surname} ${memberData.otherNames}`}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <div className="w-full h-full bg-red-600 flex items-center justify-center">
+                      <User className="w-8 h-8 text-white" />
+                    </div>
+                  )}
                 </div>
               </div>
+
+              {/* Right Column - Member Details */}
+              <div className="col-span-2 space-y-0.5 text-black pt-1">
+                {/* Name */}
+                <div className="">
+                  <div className="text-[10px] text-gray-600 font-semibold leading-tight">Name:</div>
+                  <h4 className="font-bold text-xs leading-tight text-black">
+                    {memberData.surname?.toUpperCase()} {memberData.otherNames?.toUpperCase()}
+                  </h4>
+                </div>
+                {/* Member ID */}
+                <div className="">
+                  <span className="text-[10px] text-gray-600 font-semibold leading-tight">Member ID:</span>
+                  <span className="ml-1 font-mono text-red-700 font-bold text-xs leading-tight">{memberData.memberId}</span>
+                </div>
+                {/* Two-column details */}
+                <div className="grid grid-cols-2 gap-x-4 gap-y-0.5 text-[10px] mt-1">
+                  <div>
+                    <span className="text-gray-600 font-semibold">Sex:</span>
+                    <span className="ml-1 capitalize">{memberData.sex}</span>
+                  </div>
+                  <div>
+                    <span className="text-gray-600 font-semibold">Profession:</span>
+                    <span className="ml-1">{memberData.occupation}</span>
+                  </div>
+                  <div>
+                    <span className="text-gray-600 font-semibold">DOB:</span>
+                    <span className="ml-1">{memberData.dateOfBirth}</span>
+                  </div>
+                  <div>
+                    <span className="text-gray-600 font-semibold">DOJ:</span>
+                    <span className="ml-1">{memberData.dateOfJoiningSplm}</span>
+                  </div>
+                  <div>
+                    <span className="text-gray-600 font-semibold">DOI:</span>
+                    <span className="ml-1">{new Date().toLocaleDateString('en-GB')}</span>
+                  </div>
+                  <div>
+                    <span className="text-gray-600 font-semibold">EXP:</span>
+                    <span className="ml-1">{new Date(Date.now() + 2 * 365 * 24 * 60 * 60 * 1000).toLocaleDateString('en-GB')}</span>
+                  </div>
+                  <div>
+                    <span className="text-gray-600 font-semibold">Status:</span>
+                    <span className="ml-1 font-bold text-green-700 uppercase">{memberData.membershipCategory}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Footer */}
+            <div className="absolute bottom-0 left-0 right-0 bg-red-600 text-white text-center py-1">
+              <p className="text-xs font-semibold">SPLM -Uganda Chapter Chairperson</p>
             </div>
 
             {/* Watermark */}
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-              <div className="text-red-300 text-6xl font-bold transform rotate-45 opacity-30 select-none">
+              <div className="text-red-200 text-6xl font-bold transform rotate-45 opacity-20 select-none">
                 PREVIEW
               </div>
             </div>

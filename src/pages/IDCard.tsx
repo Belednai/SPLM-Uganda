@@ -199,7 +199,7 @@ const IDCard = () => {
                   {/* Footer */}
                   <div className="text-center text-xs text-muted-foreground mt-3 border-t border-border pt-2">
                     <p>This card is property of SPLM Uganda Chapter</p>
-                    <p>Report if found: +256 700 000 000</p>
+                    <p>Report if found: +256751811010</p>
                   </div>
                 </CardContent>
               </Card>
