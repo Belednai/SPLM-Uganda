@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -26,6 +26,7 @@ import {
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { Link, useNavigate } from "react-router-dom";
+import { generateSplmUgId, createRedBackgroundPlaceholder, memberStorage } from "@/lib/utils";
 
 const registrationSchema = z.object({
   surname: z.string().min(2, "Surname must be at least 2 characters"),
@@ -59,8 +60,16 @@ const Registration = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [photoFile, setPhotoFile] = useState<File | null>(null);
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
+  const [memberId, setMemberId] = useState<string>("");
   const { toast } = useToast();
   const navigate = useNavigate();
+
+  // Initialize red background placeholder on component mount
+  useEffect(() => {
+    if (!photoPreview) {
+      setPhotoPreview(createRedBackgroundPlaceholder());
+    }
+  }, [photoPreview]);
 
   const totalSteps = 4;
   const progress = (currentStep / totalSteps) * 100;
@@ -101,12 +110,26 @@ const Registration = () => {
         return;
       }
 
+      if (!file.type.startsWith('image/')) {
+        toast({
+          title: "Invalid file type",
+          description: "Please upload an image file",
+          variant: "destructive"
+        });
+        return;
+      }
+
       setPhotoFile(file);
       const reader = new FileReader();
       reader.onloadend = () => {
         setPhotoPreview(reader.result as string);
       };
       reader.readAsDataURL(file);
+
+      toast({
+        title: "Photo uploaded successfully",
+        description: "Please ensure your photo has a red background as required",
+      });
     }
   };
 
@@ -150,15 +173,31 @@ const Registration = () => {
       return;
     }
 
-    console.log("Registration data:", data);
-    console.log("Photo file:", photoFile);
+    // Generate unique SPLM-UG ID
+    const newMemberId = generateSplmUgId();
+    setMemberId(newMemberId);
+
+    // Store member data for payment and ID generation
+    const memberData = {
+      ...data,
+      memberId: newMemberId,
+      photo: photoPreview, // Store the photo preview for ID card
+      submissionDate: new Date().toISOString(),
+      paymentStatus: 'pending'
+    };
+
+    // Save to storage and set as current member
+    memberStorage.save(newMemberId, memberData);
+    memberStorage.setCurrentMember(newMemberId);
+
+    console.log("Registration data:", memberData);
     
     toast({
       title: "Registration Submitted Successfully!",
-      description: "Your application is being reviewed. You will be notified via email or phone for further instructions.",
+      description: "Please proceed to payment to complete your membership registration.",
     });
 
-    // Redirect to payment page
+    // Redirect to payment page after short delay
     setTimeout(() => {
       navigate('/payment');
     }, 2000);
@@ -189,14 +228,20 @@ const Registration = () => {
             <Progress value={progress} className="h-2" />
           </div>
 
-          <Card className="shadow-xl border-primary/10">
-            <CardHeader>
-              <CardTitle className="flex items-center space-x-3">
-                {currentStep === 1 && <><User className="w-5 h-5 text-primary" /> Personal Information</>}
-                {currentStep === 2 && <><MapPin className="w-5 h-5 text-primary" /> Contact Details</>}
-                {currentStep === 3 && <><FileText className="w-5 h-5 text-primary" /> Membership Details</>}
-                {currentStep === 4 && <><CheckCircle className="w-5 h-5 text-primary" /> Review & Agreement</>}
+          <Card className="shadow-xl border-primary/10 bg-gradient-to-br from-background via-background to-primary/5">
+            <CardHeader className="pb-4">
+              <CardTitle className="flex items-center space-x-3 text-xl">
+                {currentStep === 1 && <><User className="w-6 h-6 text-primary" /> Personal Information</>}
+                {currentStep === 2 && <><FileText className="w-6 h-6 text-primary" /> Professional Details</>}
+                {currentStep === 3 && <><MapPin className="w-6 h-6 text-primary" /> Location Information</>}
+                {currentStep === 4 && <><CheckCircle className="w-6 h-6 text-primary" /> Membership & Agreement</>}
               </CardTitle>
+              <div className="text-sm text-muted-foreground">
+                {currentStep === 1 && "Provide your basic personal information"}
+                {currentStep === 2 && "Tell us about your professional background"}
+                {currentStep === 3 && "Provide your location and contact details"}
+                {currentStep === 4 && "Choose membership type and agree to terms"}
+              </div>
             </CardHeader>
             <CardContent className="space-y-6">
               <form onSubmit={handleSubmit(onSubmit)}>
@@ -268,17 +313,28 @@ const Registration = () => {
                     <div>
                       <Label>Passport Photo * (Red Background Required)</Label>
                       <div className="mt-2 flex items-center space-x-6">
-                        <div className="w-32 h-32 border-2 border-dashed border-primary/30 rounded-lg flex items-center justify-center overflow-hidden bg-red-50">
+                        <div className="w-32 h-40 border-2 border-dashed border-primary/30 rounded-lg flex items-center justify-center overflow-hidden bg-red-500/10 relative">
                           {photoPreview ? (
-                            <img src={photoPreview} alt="Preview" className="w-full h-full object-cover" />
+                            <>
+                              <img src={photoPreview} alt="Preview" className="w-full h-full object-cover" />
+                              {!photoFile && (
+                                <div className="absolute inset-0 bg-red-500/20 flex items-center justify-center">
+                                  <div className="text-center">
+                                    <p className="text-xs text-white font-semibold bg-red-600 px-2 py-1 rounded">
+                                      PLACEHOLDER
+                                    </p>
+                                  </div>
+                                </div>
+                              )}
+                            </>
                           ) : (
                             <div className="text-center p-4">
-                              <Camera className="w-8 h-8 text-muted-foreground mx-auto mb-2" />
-                              <p className="text-xs text-muted-foreground">Red background required</p>
+                              <Camera className="w-8 h-8 text-red-600 mx-auto mb-2" />
+                              <p className="text-xs text-red-700 font-medium">Red background required</p>
                             </div>
                           )}
                         </div>
-                        <div>
+                        <div className="flex-1">
                           <Input
                             type="file"
                             accept="image/*"
@@ -290,13 +346,19 @@ const Registration = () => {
                             <Button type="button" variant="outline" asChild>
                               <span>
                                 <Camera className="w-4 h-4 mr-2" />
-                                Upload Photo
+                                {photoFile ? 'Change Photo' : 'Upload Photo'}
                               </span>
                             </Button>
                           </Label>
-                          <p className="text-sm text-muted-foreground mt-2">
-                            Photo must have a red background
-                          </p>
+                          <div className="mt-3 p-3 bg-red-50 border border-red-200 rounded-lg">
+                            <p className="text-sm text-red-800 font-medium mb-1">📷 Photo Requirements:</p>
+                            <ul className="text-xs text-red-700 space-y-1">
+                              <li>• Must have a <strong>red background</strong></li>
+                              <li>• Passport-style photo (head and shoulders)</li>
+                              <li>• Clear, recent photo</li>
+                              <li>• Maximum file size: 5MB</li>
+                            </ul>
+                          </div>
                         </div>
                       </div>
                     </div>

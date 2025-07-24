@@ -16,10 +16,10 @@ const splmLeaders = [
     photo: salvaKiir,
   },
   {
-    name: "H.E Dr. Bol Mel",
-    role: "Deputy Chairperson, SPLM",
+    name: "H.E Dr. Benjamin Bol Mel",
+    role: "First deputy Chairperson, SPLM",
     years: "2025–present",
-    bio: "Deputy Chairperson of SPLM, supporting the party's vision and leadership in South Sudan and the diaspora.",
+    bio: "First deputy Chairperson of SPLM, supporting the party's vision and leadership in South Sudan and the diaspora.",
     photo: bolMel,
   },
   {
@@ -35,19 +35,19 @@ const ugandaChapterLeaders = [
   {
     name: "CDE. Dhieu Simon Chol",
     role: "Chairperson, SPLM Uganda Chapter",
-    contact: "+256784772954",
+    contact: "+256745356818",
     photo: dhieuSimonChol,
   },
   {
     name: "Ms. Grace Akello",
     role: "Secretary General",
-    contact: "+256784772954",
+    contact: "+256751811010",
     photo: splmLogo,
   },
   {
     name: "Mr. Samuel Deng",
     role: "Treasurer",
-    contact: "+256784772954",
+    contact: "+256751811010",
     photo: splmLogo,
   },
 ];

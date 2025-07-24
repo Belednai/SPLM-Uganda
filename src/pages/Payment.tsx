@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -15,24 +15,39 @@ import {
   CheckCircle,
   ArrowLeft,
   DollarSign,
-  Receipt
+  Receipt,
+  IdCard,
+  Eye,
+  User
 } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { memberStorage } from "@/lib/utils";
+import splmLogo from "@/assets/splm-uganda-logo.png";
 
 const Payment = () => {
   const [selectedMethod, setSelectedMethod] = useState<string>("");
   const [processing, setProcessing] = useState(false);
+  const [paymentCompleted, setPaymentCompleted] = useState(false);
+  const [memberData, setMemberData] = useState<any>(null);
   const { toast } = useToast();
+  const navigate = useNavigate();
 
-  // Mock member data - in real app this would come from registration
-  const memberData = {
-    name: "John Doe",
-    membershipType: "Standard Membership",
-    amount: "UGX 50,000",
-    memberId: "UG-SPLM-2025-001234"
-  };
+  // Load member data from storage
+  useEffect(() => {
+    const currentMember = memberStorage.getCurrentMember();
+    if (!currentMember) {
+      toast({
+        title: "No Registration Found",
+        description: "Please complete registration first",
+        variant: "destructive"
+      });
+      navigate('/register');
+      return;
+    }
+    setMemberData(currentMember);
+  }, [navigate, toast]);
 
   const paymentMethods = [
     {
@@ -79,18 +94,141 @@ const Payment = () => {
 
     // Simulate payment processing
     setTimeout(() => {
+      // Update member payment status
+      const updatedMemberData = {
+        ...memberData,
+        paymentStatus: 'completed',
+        paymentDate: new Date().toISOString(),
+        paymentMethod: selectedMethod
+      };
+      
+      memberStorage.save(memberData.memberId, updatedMemberData);
+      setMemberData(updatedMemberData);
+      setPaymentCompleted(true);
+      
       toast({
         title: "Payment Successful!",
-        description: "Your membership has been activated. Generating your ID card...",
+        description: "Your membership has been activated. Your ID preview is now available below.",
       });
       setProcessing(false);
-      
-      // In a real app, this would redirect to ID generation/download page
-      console.log("Payment processed for:", memberData);
     }, 3000);
   };
 
   const selectedPaymentMethod = paymentMethods.find(method => method.id === selectedMethod);
+
+  // ID Preview Component
+  const IDPreview = ({ memberData }: { memberData: any }) => (
+    <Card className="shadow-2xl border-primary/20 mb-8">
+      <CardHeader>
+        <CardTitle className="flex items-center space-x-3 text-center justify-center">
+          <IdCard className="w-5 h-5 text-primary" />
+          Membership ID Preview
+        </CardTitle>
+        <div className="text-center">
+          <Badge variant="outline" className="bg-red-50 border-red-200 text-red-700">
+            <Eye className="w-3 h-3 mr-1" />
+            UNOFFICIAL VIEW ONLY
+          </Badge>
+        </div>
+      </CardHeader>
+      <CardContent>
+        <div className="flex justify-center">
+          <div className="w-96 h-64 bg-gradient-to-br from-primary/5 via-background to-secondary/5 border-2 border-primary/20 rounded-lg overflow-hidden">
+            {/* Header */}
+            <div className="bg-primary text-primary-foreground p-3 flex items-center space-x-3">
+              <img src={splmLogo} alt="SPLM" className="w-8 h-8 object-contain" />
+              <div>
+                <h3 className="font-bold text-sm">SPLM UGANDA CHAPTER</h3>
+                <p className="text-xs opacity-90">Member Identification Card</p>
+              </div>
+            </div>
+
+                         {/* Member Info */}
+             <div className="p-4 flex space-x-4 h-full">
+               {/* Photo */}
+               <div className="w-20 h-24 bg-red-500 rounded-lg overflow-hidden border-2 border-red-300 flex-shrink-0 relative">
+                 {memberData.photo ? (
+                   <>
+                     <img 
+                       src={memberData.photo} 
+                       alt={`${memberData.surname} ${memberData.otherNames}`}
+                       className="w-full h-full object-cover"
+                     />
+                     <div className="absolute inset-0 bg-red-500/10 pointer-events-none"></div>
+                   </>
+                 ) : (
+                   <div className="w-full h-full bg-red-500 flex items-center justify-center">
+                     <User className="w-8 h-8 text-white" />
+                   </div>
+                 )}
+               </div>
+
+              {/* Details */}
+              <div className="flex-1 space-y-2">
+                <div>
+                  <h4 className="font-bold text-lg text-foreground leading-tight">
+                    {memberData.surname} {memberData.otherNames}
+                  </h4>
+                  <p className="text-xs text-muted-foreground capitalize">
+                    {memberData.membershipCategory} Member
+                  </p>
+                </div>
+                
+                <div className="space-y-1 text-xs">
+                  <div className="flex items-center space-x-2">
+                    <IdCard className="w-3 h-3 text-primary" />
+                    <span className="font-mono font-bold text-primary">
+                      {memberData.memberId}
+                    </span>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <User className="w-3 h-3 text-muted-foreground" />
+                    <span>Sex: {memberData.sex}</span>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <span className="text-muted-foreground">Born: {memberData.dateOfBirth}</span>
+                  </div>
+                </div>
+
+                <div className="flex items-center space-x-2">
+                  <Badge variant="default" className="text-xs">
+                    Active
+                  </Badge>
+                  <span className="text-xs text-muted-foreground">
+                    Valid from {new Date().toLocaleDateString()}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* Watermark */}
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+              <div className="text-red-300 text-6xl font-bold transform rotate-45 opacity-30 select-none">
+                PREVIEW
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div className="mt-6 text-center text-sm text-muted-foreground">
+          <p className="font-semibold text-red-600 mb-2">⚠️ This is an unofficial preview only</p>
+          <p>Your official membership ID card will be available for collection from our Kampala office.</p>
+          <p>You will be contacted with pickup instructions within 5-7 business days.</p>
+        </div>
+      </CardContent>
+    </Card>
+  );
+
+  if (!memberData) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center">
+          <Clock className="w-16 h-16 animate-spin text-primary mx-auto mb-4" />
+          <p className="text-muted-foreground">Loading member information...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -101,23 +239,34 @@ const Payment = () => {
           {/* Header */}
           <div className="text-center mb-8">
             <h1 className="text-4xl font-bold text-foreground mb-4">
-              Complete Your <span className="text-primary">Payment</span>
+              {paymentCompleted ? (
+                <>Membership <span className="text-primary">Activated!</span></>
+              ) : (
+                <>Complete Your <span className="text-primary">Payment</span></>
+              )}
             </h1>
             <p className="text-xl text-muted-foreground">
-              Secure payment processing for your SPLM Uganda Chapter membership
+              {paymentCompleted 
+                ? "Your SPLM Uganda Chapter membership is now active"
+                : "Secure payment processing for your SPLM Uganda Chapter membership"
+              }
             </p>
           </div>
 
-          <div className="grid lg:grid-cols-3 gap-8">
-            {/* Payment Methods */}
-            <div className="lg:col-span-2">
-              <Card className="shadow-xl border-primary/10">
-                <CardHeader>
-                  <CardTitle className="flex items-center space-x-3">
-                    <Shield className="w-5 h-5 text-primary" />
-                    Payment Methods
-                  </CardTitle>
-                </CardHeader>
+          {/* Show ID Preview after payment completion */}
+          {paymentCompleted && <IDPreview memberData={memberData} />}
+
+          {!paymentCompleted && (
+            <div className="grid lg:grid-cols-3 gap-8">
+              {/* Payment Methods */}
+              <div className="lg:col-span-2">
+                <Card className="shadow-xl border-primary/10">
+                  <CardHeader>
+                    <CardTitle className="flex items-center space-x-3">
+                      <Shield className="w-5 h-5 text-primary" />
+                      Payment Methods
+                    </CardTitle>
+                  </CardHeader>
                 <CardContent className="space-y-4">
                   {paymentMethods.map((method) => {
                     const IconComponent = method.icon;
@@ -289,7 +438,7 @@ const Payment = () => {
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div>
-                    <h4 className="font-semibold text-foreground">{memberData.name}</h4>
+                    <h4 className="font-semibold text-foreground">{memberData.surname} {memberData.otherNames}</h4>
                     <p className="text-sm text-muted-foreground">Member ID: {memberData.memberId}</p>
                   </div>
                   
@@ -297,7 +446,7 @@ const Payment = () => {
                   
                   <div className="flex justify-between">
                     <span className="text-muted-foreground">Membership Type:</span>
-                    <span className="font-medium">{memberData.membershipType}</span>
+                    <span className="font-medium capitalize">{memberData.membershipCategory} Member</span>
                   </div>
                   
                   <div className="flex justify-between">
@@ -309,7 +458,7 @@ const Payment = () => {
                   
                   <div className="flex justify-between text-lg font-bold">
                     <span>Total Amount:</span>
-                    <span className="text-primary">{memberData.amount}</span>
+                    <span className="text-primary">$40 USD</span>
                   </div>
 
                   <div className="space-y-3 pt-4">
@@ -328,7 +477,7 @@ const Payment = () => {
                       ) : (
                         <>
                           <CheckCircle className="w-4 h-4" />
-                          Pay {memberData.amount}
+                          Pay $40 USD
                         </>
                       )}
                     </Button>
@@ -357,6 +506,29 @@ const Payment = () => {
               </Card>
             </div>
           </div>
+          )}
+
+          {/* Post-payment success message */}
+          {paymentCompleted && (
+            <div className="text-center mt-8">
+              <Card className="max-w-2xl mx-auto">
+                <CardContent className="p-6">
+                  <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
+                  <h3 className="text-2xl font-bold text-foreground mb-2">Welcome to SPLM Uganda Chapter!</h3>
+                  <p className="text-muted-foreground mb-4">
+                    Your membership registration is now complete. Thank you for joining our liberation movement.
+                  </p>
+                  <div className="flex justify-center space-x-4">
+                    <Link to="/">
+                      <Button variant="hero">
+                        Return to Home
+                      </Button>
+                    </Link>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          )}
         </div>
       </div>
 

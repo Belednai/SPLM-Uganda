@@ -8,7 +8,7 @@ const HistoryTimeline = () => {
       year: "1983",
       date: "May 16",
       title: "SPLM/SPLA Founded",
-      description: "Dr. John Garang de Mabior and Joseph Oduho establish the Sudan People's Liberation Movement (SPLM) and Sudan People's Liberation Army (SPLA) as the political and military wings to resist Sudan's central government. Initially adopted Marxist-Leninist ideology.",
+      description: "Dr. John Garang de Mabior with those of Joseph Oduho establish the Sudan People's Liberation Movement (SPLM) and Sudan People's Liberation Army (SPLA) as the political and military wings to resist Sudan's central government. Initially adopted Marxist-Leninist ideology.",
       icon: Users,
       highlight: true
     },
@@ -87,20 +87,37 @@ const HistoryTimeline = () => {
 
         {/* Founders Section */}
         <div className="mb-16">
-          <Card className="max-w-4xl mx-auto overflow-hidden shadow-lg">
+          <Card className="max-w-6xl mx-auto overflow-hidden shadow-lg">
             <CardContent className="p-0">
               <div className="grid md:grid-cols-2 gap-0">
-                <div className="p-8 md:p-12 flex flex-col justify-center">
+                <div className="p-6 md:p-8 flex flex-col justify-center">
                   <h3 className="text-2xl md:text-3xl font-bold text-primary mb-4">
                     Founding Fathers of Liberation
                   </h3>
                   <p className="text-muted-foreground text-lg leading-relaxed mb-6">
-                    <span className="font-semibold text-foreground">Dr. John Garang de Mabior</span> (PhD, Iowa State University) and 
+                    <span className="font-semibold text-foreground">Dr. John Garang de Mabior</span> (PhD, Iowa State University) with those of 
                     <span className="font-semibold text-foreground"> Joseph Oduho</span> established SPLM/SPLA 
                     on May 16, 1983, with a revolutionary vision of a united, democratic, and secular Sudan where all citizens 
                     enjoy equal rights regardless of race, religion, or ethnicity. Their movement challenged the marginalization 
                     of Sudan's periphery and fought for inclusive governance.
                   </p>
+                  <div className="mb-4">
+                    <h4 className="text-lg font-bold text-primary mb-2">The 12 Founding Fathers of SPLM/SPLA</h4>
+                    <ul className="list-disc list-inside text-foreground text-base space-y-1">
+                      <li><span className="font-semibold">Dr. John Garang de Mabior</span> – Founding Chairman and Commander-in-Chief</li>
+                      <li><span className="font-semibold">Gen. Salva Kiir Mayardit</span> – Founding member, later Chairman and President</li>
+                      <li><span className="font-semibold">Kerubino Kuanyin Bol</span> – Sparked the Bor Mutiny, second in command</li>
+                      <li><span className="font-semibold">William Nyuon Bany</span> – First Chief of Staff of the SPLA</li>
+                      <li><span className="font-semibold">Arok Thon Arok</span> – Deputy Chief of Staff for Administration and Logistics</li>
+                      <li><span className="font-semibold">Joseph Oduho</span> – Founding Chairman of SPLM (political wing)</li>
+                      <li><span className="font-semibold">Martin Majier Gai</span> – Legal expert, Deputy Speaker of the Southern Legislative Assembly</li>
+                      <li><span className="font-semibold">Martin Manyiel Ayuel</span> – Senior founding member and military leader</li>
+                      <li><span className="font-semibold">Yusuf Kuwa Mekki</span> – Commander of the New Cush brigade, Nuba Mountains leader</li>
+                      <li><span className="font-semibold">Gillario Modi</span> – Founding member and senior commander</li>
+                      <li><span className="font-semibold">Ngachigak Ngachiluk</span> – Led the “Scorpion” forces, promoted for capturing Boma</li>
+                      <li><span className="font-semibold">Lual Diing Wol</span> – “Baba Africa,” early advisor and organizer</li>
+                    </ul>
+                  </div>
                   <div className="space-y-2">
                     <div className="text-sm font-medium text-primary">
                       "Our vision is of a New Sudan, free from racism, tribalism, sectarianism and all forms of discrimination and marginalization."
