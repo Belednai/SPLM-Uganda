@@ -28,24 +28,29 @@ import Footer from "@/components/Footer";
 import { Link, useNavigate } from "react-router-dom";
 
 const registrationSchema = z.object({
-  firstName: z.string().min(2, "First name must be at least 2 characters"),
-  lastName: z.string().min(2, "Last name must be at least 2 characters"),
-  middleName: z.string().optional(),
-  dateOfBirth: z.string().min(1, "Date of birth is required"),
-  nationality: z.string().min(1, "Nationality is required"),
-  constituency: z.string().min(1, "Constituency is required"),
-  phoneNumber: z.string().min(10, "Valid phone number is required"),
-  email: z.string().email("Valid email is required"),
-  address: z.string().min(10, "Complete address is required"),
+  surname: z.string().min(2, "Surname must be at least 2 characters"),
+  otherNames: z.string().min(2, "Other names must be at least 2 characters"),
   occupation: z.string().min(2, "Occupation is required"),
-  membershipType: z.string().min(1, "Please select a membership type"),
-  emergencyContact: z.string().min(10, "Emergency contact is required"),
-  emergencyPhone: z.string().min(10, "Emergency phone is required"),
-  politicalExperience: z.string().optional(),
-  skills: z.string().optional(),
-  motivation: z.string().min(20, "Please explain your motivation (minimum 20 characters)"),
+  academicStatus: z.string().min(2, "Academic status is required"),
+  professionalExperience: z.string().min(2, "Professional experience is required"),
+  sex: z.string().min(1, "Sex is required"),
+  maritalStatus: z.string().min(1, "Marital status is required"),
+  dateOfBirth: z.string().min(1, "Date of birth is required"),
+  dateOfJoiningSplm: z.string().min(1, "Date of joining SPLM is required"),
+  state: z.string().min(1, "State is required"),
+  country: z.string().min(1, "Country is required"),
+  payam: z.string().min(1, "Payam is required"),
+  boma: z.string().min(1, "Boma is required"),
+  continent: z.string().min(1, "Continent is required"),
+  diasporaCountry: z.string().min(1, "Current country is required"),
+  address: z.string().min(10, "Complete address is required"),
+  telephone: z.string().min(10, "Valid phone number is required"),
+  membershipCategory: z.string().min(1, "Please select a membership category"),
+  previousPoliticalParty: z.string().optional(),
+  reasonForLeavingParty: z.string().optional(),
+  splmObjectivesBelief: z.string().min(20, "Please explain your belief in SPLM objectives"),
+  readyToServe: z.string().min(1, "Please indicate if you are ready to serve SPLM"),
   agreeToTerms: z.boolean().refine(value => value === true, "You must agree to terms and conditions"),
-  agreeToDataProcessing: z.boolean().refine(value => value === true, "You must consent to data processing"),
 });
 
 type RegistrationFormData = z.infer<typeof registrationSchema>;
@@ -72,10 +77,11 @@ const Registration = () => {
     mode: "onChange"
   });
 
-  const membershipTypes = [
-    { value: "standard", label: "Standard Membership", price: "UGX 50,000", description: "Full membership with all benefits" },
-    { value: "supporter", label: "Supporter Membership", price: "UGX 25,000", description: "Limited participation rights" },
-    { value: "lifetime", label: "Lifetime Membership", price: "UGX 200,000", description: "Permanent membership with exclusive benefits" }
+  const membershipCategories = [
+    { value: "active", label: "Active" },
+    { value: "ordinary", label: "Ordinary" },
+    { value: "supporter", label: "Supporter" },
+    { value: "sympathizer", label: "Sympathizer" }
   ];
 
   const constituencies = [
@@ -109,16 +115,16 @@ const Registration = () => {
     
     switch (currentStep) {
       case 1:
-        fieldsToValidate = ["firstName", "lastName", "dateOfBirth", "nationality"];
+        fieldsToValidate = ["surname", "otherNames", "sex", "maritalStatus"];
         break;
       case 2:
-        fieldsToValidate = ["phoneNumber", "email", "address", "constituency"];
+        fieldsToValidate = ["academicStatus", "occupation", "dateOfBirth", "dateOfJoiningSplm"];
         break;
       case 3:
-        fieldsToValidate = ["occupation", "membershipType", "emergencyContact", "emergencyPhone"];
+        fieldsToValidate = ["state", "country", "payam", "boma", "continent", "diasporaCountry", "address", "telephone"];
         break;
       case 4:
-        fieldsToValidate = ["motivation", "agreeToTerms", "agreeToDataProcessing"];
+        fieldsToValidate = ["membershipCategory", "previousPoliticalParty", "reasonForLeavingParty", "splmObjectivesBelief", "readyToServe", "agreeToTerms"];
         break;
     }
 
@@ -149,7 +155,7 @@ const Registration = () => {
     
     toast({
       title: "Registration Submitted Successfully!",
-      description: "Please proceed to payment. Your ID will be ready for pickup from our Kampala office within 5-7 business days after payment confirmation.",
+      description: "Your application is being reviewed. You will be notified via email or phone for further instructions.",
     });
 
     // Redirect to payment page
@@ -158,7 +164,7 @@ const Registration = () => {
     }, 2000);
   };
 
-  const selectedMembershipType = membershipTypes.find(type => type.value === watch("membershipType"));
+  const selectedMembershipType = membershipCategories.find(type => type.value === watch("membershipCategory"));
 
   return (
     <div className="min-h-screen bg-background">
@@ -199,39 +205,145 @@ const Registration = () => {
                   <div className="space-y-6">
                     <div className="grid md:grid-cols-2 gap-6">
                       <div>
-                        <Label htmlFor="firstName">First Name *</Label>
+                        <Label htmlFor="surname">Surname *</Label>
                         <Input
-                          id="firstName"
-                          {...register("firstName")}
+                          id="surname"
+                          {...register("surname")}
                           className="mt-2"
-                          placeholder="Enter your first name"
+                          placeholder="Enter your surname"
                         />
-                        {errors.firstName && (
-                          <p className="text-destructive text-sm mt-1">{errors.firstName.message}</p>
+                        {errors.surname && (
+                          <p className="text-destructive text-sm mt-1">{errors.surname.message}</p>
                         )}
                       </div>
                       <div>
-                        <Label htmlFor="lastName">Last Name *</Label>
+                        <Label htmlFor="otherNames">Other Names *</Label>
                         <Input
-                          id="lastName"
-                          {...register("lastName")}
+                          id="otherNames"
+                          {...register("otherNames")}
                           className="mt-2"
-                          placeholder="Enter your last name"
+                          placeholder="Enter your other names"
                         />
-                        {errors.lastName && (
-                          <p className="text-destructive text-sm mt-1">{errors.lastName.message}</p>
+                        {errors.otherNames && (
+                          <p className="text-destructive text-sm mt-1">{errors.otherNames.message}</p>
+                        )}
+                      </div>
+                    </div>
+
+                    <div className="grid md:grid-cols-2 gap-6">
+                      <div>
+                        <Label htmlFor="sex">Sex *</Label>
+                        <Select onValueChange={(value) => setValue("sex", value)}>
+                          <SelectTrigger className="mt-2">
+                            <SelectValue placeholder="Select sex" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="male">Male</SelectItem>
+                            <SelectItem value="female">Female</SelectItem>
+                          </SelectContent>
+                        </Select>
+                        {errors.sex && (
+                          <p className="text-destructive text-sm mt-1">{errors.sex.message}</p>
+                        )}
+                      </div>
+                      <div>
+                        <Label htmlFor="maritalStatus">Marital Status *</Label>
+                        <Select onValueChange={(value) => setValue("maritalStatus", value)}>
+                          <SelectTrigger className="mt-2">
+                            <SelectValue placeholder="Select marital status" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="single">Single</SelectItem>
+                            <SelectItem value="married">Married</SelectItem>
+                            <SelectItem value="divorced">Divorced</SelectItem>
+                            <SelectItem value="widowed">Widowed</SelectItem>
+                          </SelectContent>
+                        </Select>
+                        {errors.maritalStatus && (
+                          <p className="text-destructive text-sm mt-1">{errors.maritalStatus.message}</p>
                         )}
                       </div>
                     </div>
 
                     <div>
-                      <Label htmlFor="middleName">Middle Name (Optional)</Label>
-                      <Input
-                        id="middleName"
-                        {...register("middleName")}
+                      <Label>Passport Photo * (Red Background Required)</Label>
+                      <div className="mt-2 flex items-center space-x-6">
+                        <div className="w-32 h-32 border-2 border-dashed border-primary/30 rounded-lg flex items-center justify-center overflow-hidden bg-red-50">
+                          {photoPreview ? (
+                            <img src={photoPreview} alt="Preview" className="w-full h-full object-cover" />
+                          ) : (
+                            <div className="text-center p-4">
+                              <Camera className="w-8 h-8 text-muted-foreground mx-auto mb-2" />
+                              <p className="text-xs text-muted-foreground">Red background required</p>
+                            </div>
+                          )}
+                        </div>
+                        <div>
+                          <Input
+                            type="file"
+                            accept="image/*"
+                            onChange={handlePhotoUpload}
+                            className="hidden"
+                            id="photo-upload"
+                          />
+                          <Label htmlFor="photo-upload" className="cursor-pointer">
+                            <Button type="button" variant="outline" asChild>
+                              <span>
+                                <Camera className="w-4 h-4 mr-2" />
+                                Upload Photo
+                              </span>
+                            </Button>
+                          </Label>
+                          <p className="text-sm text-muted-foreground mt-2">
+                            Photo must have a red background
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {currentStep === 2 && (
+                  <div className="space-y-6">
+                    <div className="grid md:grid-cols-2 gap-6">
+                      <div>
+                        <Label htmlFor="academicStatus">Academic Status *</Label>
+                        <Input
+                          id="academicStatus"
+                          {...register("academicStatus")}
+                          className="mt-2"
+                          placeholder="Your highest academic qualification"
+                        />
+                        {errors.academicStatus && (
+                          <p className="text-destructive text-sm mt-1">{errors.academicStatus.message}</p>
+                        )}
+                      </div>
+                      <div>
+                        <Label htmlFor="occupation">Occupation *</Label>
+                        <Input
+                          id="occupation"
+                          {...register("occupation")}
+                          className="mt-2"
+                          placeholder="Your current occupation"
+                        />
+                        {errors.occupation && (
+                          <p className="text-destructive text-sm mt-1">{errors.occupation.message}</p>
+                        )}
+                      </div>
+                    </div>
+
+                    <div>
+                      <Label htmlFor="professionalExperience">Professional Experience *</Label>
+                      <Textarea
+                        id="professionalExperience"
+                        {...register("professionalExperience")}
                         className="mt-2"
-                        placeholder="Enter your middle name"
+                        rows={3}
+                        placeholder="Describe your professional experience"
                       />
+                      {errors.professionalExperience && (
+                        <p className="text-destructive text-sm mt-1">{errors.professionalExperience.message}</p>
+                      )}
                     </div>
 
                     <div className="grid md:grid-cols-2 gap-6">
@@ -248,97 +360,119 @@ const Registration = () => {
                         )}
                       </div>
                       <div>
-                        <Label htmlFor="nationality">Nationality *</Label>
-                        <Select onValueChange={(value) => setValue("nationality", value)}>
-                          <SelectTrigger className="mt-2">
-                            <SelectValue placeholder="Select nationality" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="south-sudan">South Sudan</SelectItem>
-                            <SelectItem value="uganda">Uganda</SelectItem>
-                            <SelectItem value="sudan">Sudan</SelectItem>
-                            <SelectItem value="other">Other</SelectItem>
-                          </SelectContent>
-                        </Select>
-                        {errors.nationality && (
-                          <p className="text-destructive text-sm mt-1">{errors.nationality.message}</p>
+                        <Label htmlFor="dateOfJoiningSplm">Date of Joining SPLM *</Label>
+                        <Input
+                          id="dateOfJoiningSplm"
+                          type="date"
+                          {...register("dateOfJoiningSplm")}
+                          className="mt-2"
+                        />
+                        {errors.dateOfJoiningSplm && (
+                          <p className="text-destructive text-sm mt-1">{errors.dateOfJoiningSplm.message}</p>
                         )}
-                      </div>
-                    </div>
-
-                    <div>
-                      <Label>Passport Photo *</Label>
-                      <div className="mt-2 flex items-center space-x-6">
-                        <div className="w-32 h-32 border-2 border-dashed border-primary/30 rounded-lg flex items-center justify-center overflow-hidden">
-                          {photoPreview ? (
-                            <img src={photoPreview} alt="Preview" className="w-full h-full object-cover" />
-                          ) : (
-                            <Camera className="w-8 h-8 text-muted-foreground" />
-                          )}
-                        </div>
-                        <div>
-                          <Input
-                            type="file"
-                            accept="image/*"
-                            onChange={handlePhotoUpload}
-                            className="hidden"
-                            id="photo-upload"
-                          />
-                          <Label htmlFor="photo-upload" className="cursor-pointer">
-                            <Button type="button" variant="outline" asChild>
-                              <span>
-                                <Camera className="w-4 h-4" />
-                                Upload Photo
-                              </span>
-                            </Button>
-                          </Label>
-                          <p className="text-sm text-muted-foreground mt-2">
-                            JPG, PNG up to 5MB. Passport-style photo preferred.
-                          </p>
-                        </div>
                       </div>
                     </div>
                   </div>
                 )}
 
-                {currentStep === 2 && (
+                {currentStep === 3 && (
                   <div className="space-y-6">
                     <div className="grid md:grid-cols-2 gap-6">
                       <div>
-                        <Label htmlFor="phoneNumber">Phone Number *</Label>
+                        <Label htmlFor="state">State *</Label>
                         <Input
-                          id="phoneNumber"
-                          {...register("phoneNumber")}
+                          id="state"
+                          {...register("state")}
                           className="mt-2"
-                          placeholder="+256 700 000 000"
+                          placeholder="Your state in South Sudan"
                         />
-                        {errors.phoneNumber && (
-                          <p className="text-destructive text-sm mt-1">{errors.phoneNumber.message}</p>
+                        {errors.state && (
+                          <p className="text-destructive text-sm mt-1">{errors.state.message}</p>
                         )}
                       </div>
                       <div>
-                        <Label htmlFor="email">Email Address *</Label>
+                        <Label htmlFor="country">Country *</Label>
                         <Input
-                          id="email"
-                          type="email"
-                          {...register("email")}
+                          id="country"
+                          {...register("country")}
                           className="mt-2"
-                          placeholder="your.email@example.com"
+                          placeholder="Your country in South Sudan"
                         />
-                        {errors.email && (
-                          <p className="text-destructive text-sm mt-1">{errors.email.message}</p>
+                        {errors.country && (
+                          <p className="text-destructive text-sm mt-1">{errors.country.message}</p>
+                        )}
+                      </div>
+                    </div>
+
+                    <div className="grid md:grid-cols-2 gap-6">
+                      <div>
+                        <Label htmlFor="payam">Payam *</Label>
+                        <Input
+                          id="payam"
+                          {...register("payam")}
+                          className="mt-2"
+                          placeholder="Your payam"
+                        />
+                        {errors.payam && (
+                          <p className="text-destructive text-sm mt-1">{errors.payam.message}</p>
+                        )}
+                      </div>
+                      <div>
+                        <Label htmlFor="boma">Boma *</Label>
+                        <Input
+                          id="boma"
+                          {...register("boma")}
+                          className="mt-2"
+                          placeholder="Your boma"
+                        />
+                        {errors.boma && (
+                          <p className="text-destructive text-sm mt-1">{errors.boma.message}</p>
+                        )}
+                      </div>
+                    </div>
+
+                    <div className="grid md:grid-cols-2 gap-6">
+                      <div>
+                        <Label htmlFor="continent">Continent *</Label>
+                        <Select onValueChange={(value) => setValue("continent", value)}>
+                          <SelectTrigger className="mt-2">
+                            <SelectValue placeholder="Select continent" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="africa">Africa</SelectItem>
+                            <SelectItem value="asia">Asia</SelectItem>
+                            <SelectItem value="europe">Europe</SelectItem>
+                            <SelectItem value="north-america">North America</SelectItem>
+                            <SelectItem value="south-america">South America</SelectItem>
+                            <SelectItem value="australia">Australia</SelectItem>
+                          </SelectContent>
+                        </Select>
+                        {errors.continent && (
+                          <p className="text-destructive text-sm mt-1">{errors.continent.message}</p>
+                        )}
+                      </div>
+                      <div>
+                        <Label htmlFor="diasporaCountry">Current Country *</Label>
+                        <Input
+                          id="diasporaCountry"
+                          {...register("diasporaCountry")}
+                          className="mt-2"
+                          placeholder="Your current country of residence"
+                        />
+                        {errors.diasporaCountry && (
+                          <p className="text-destructive text-sm mt-1">{errors.diasporaCountry.message}</p>
                         )}
                       </div>
                     </div>
 
                     <div>
-                      <Label htmlFor="address">Complete Address *</Label>
+                      <Label htmlFor="address">Address *</Label>
                       <Textarea
                         id="address"
                         {...register("address")}
                         className="mt-2"
-                        rows={3}
-                        placeholder="Enter your complete address including city and postal code"
+                        rows={2}
+                        placeholder="Your current address"
                       />
                       {errors.address && (
                         <p className="text-destructive text-sm mt-1">{errors.address.message}</p>
@@ -346,119 +480,16 @@ const Registration = () => {
                     </div>
 
                     <div>
-                      <Label htmlFor="constituency">Constituency *</Label>
-                      <Select onValueChange={(value) => setValue("constituency", value)}>
-                        <SelectTrigger className="mt-2">
-                          <SelectValue placeholder="Select your constituency" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {constituencies.map((constituency) => (
-                            <SelectItem key={constituency} value={constituency}>
-                              {constituency}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                      {errors.constituency && (
-                        <p className="text-destructive text-sm mt-1">{errors.constituency.message}</p>
-                      )}
-                    </div>
-                  </div>
-                )}
-
-                {currentStep === 3 && (
-                  <div className="space-y-6">
-                    <div>
-                      <Label htmlFor="occupation">Occupation *</Label>
+                      <Label htmlFor="telephone">Telephone *</Label>
                       <Input
-                        id="occupation"
-                        {...register("occupation")}
+                        id="telephone"
+                        {...register("telephone")}
                         className="mt-2"
-                        placeholder="Enter your current occupation"
+                        placeholder="+256 XXX XXX XXX"
                       />
-                      {errors.occupation && (
-                        <p className="text-destructive text-sm mt-1">{errors.occupation.message}</p>
+                      {errors.telephone && (
+                        <p className="text-destructive text-sm mt-1">{errors.telephone.message}</p>
                       )}
-                    </div>
-
-                    <div>
-                      <Label>Membership Type *</Label>
-                      <div className="mt-4 space-y-4">
-                        {membershipTypes.map((type) => (
-                          <div key={type.value} className="border rounded-lg p-4 cursor-pointer hover:border-primary/50 transition-colors"
-                               onClick={() => setValue("membershipType", type.value)}>
-                            <div className="flex items-center space-x-3">
-                              <input
-                                type="radio"
-                                {...register("membershipType")}
-                                value={type.value}
-                                className="text-primary"
-                              />
-                              <div className="flex-1">
-                                <div className="flex items-center justify-between">
-                                  <h4 className="font-semibold">{type.label}</h4>
-                                  <Badge variant="outline" className="font-bold text-primary">
-                                    {type.price}
-                                  </Badge>
-                                </div>
-                                <p className="text-sm text-muted-foreground mt-1">{type.description}</p>
-                              </div>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                      {errors.membershipType && (
-                        <p className="text-destructive text-sm mt-1">{errors.membershipType.message}</p>
-                      )}
-                    </div>
-
-                    <div className="grid md:grid-cols-2 gap-6">
-                      <div>
-                        <Label htmlFor="emergencyContact">Emergency Contact Name *</Label>
-                        <Input
-                          id="emergencyContact"
-                          {...register("emergencyContact")}
-                          className="mt-2"
-                          placeholder="Full name of emergency contact"
-                        />
-                        {errors.emergencyContact && (
-                          <p className="text-destructive text-sm mt-1">{errors.emergencyContact.message}</p>
-                        )}
-                      </div>
-                      <div>
-                        <Label htmlFor="emergencyPhone">Emergency Contact Phone *</Label>
-                        <Input
-                          id="emergencyPhone"
-                          {...register("emergencyPhone")}
-                          className="mt-2"
-                          placeholder="+256 700 000 000"
-                        />
-                        {errors.emergencyPhone && (
-                          <p className="text-destructive text-sm mt-1">{errors.emergencyPhone.message}</p>
-                        )}
-                      </div>
-                    </div>
-
-                    <div>
-                      <Label htmlFor="politicalExperience">Political Experience (Optional)</Label>
-                      <Textarea
-                        id="politicalExperience"
-                        {...register("politicalExperience")}
-                        className="mt-2"
-                        rows={3}
-                        placeholder="Describe any relevant political experience or involvement"
-                      />
-                    </div>
-
-                    <div>
-                      <Label htmlFor="skills">Skills & Expertise (Optional)</Label>
-                      <Textarea
-                        id="skills"
-                        {...register("skills")}
-                        className="mt-2"
-                        rows={3}
-                        placeholder="List skills that could benefit the SPLM Uganda Chapter"
-                      />
                     </div>
                   </div>
                 )}
@@ -466,105 +497,73 @@ const Registration = () => {
                 {currentStep === 4 && (
                   <div className="space-y-6">
                     <div>
-                      <Label htmlFor="motivation">Why do you want to join SPLM Uganda Chapter? *</Label>
-                      <Textarea
-                        id="motivation"
-                        {...register("motivation")}
-                        className="mt-2"
-                        rows={4}
-                        placeholder="Please explain your motivation for joining and how you can contribute to our mission"
-                      />
-                      {errors.motivation && (
-                        <p className="text-destructive text-sm mt-1">{errors.motivation.message}</p>
+                      <Label>Membership Category *</Label>
+                      <div className="mt-4 space-y-4">
+                        {membershipCategories.map((category) => (
+                          <div key={category.value} className="flex items-center space-x-3">
+                            <input
+                              type="radio"
+                              {...register("membershipCategory")}
+                              value={category.value}
+                              className="text-primary"
+                            />
+                            <Label>{category.label}</Label>
+                          </div>
+                        ))}
+                      </div>
+                      {errors.membershipCategory && (
+                        <p className="text-destructive text-sm mt-1">{errors.membershipCategory.message}</p>
                       )}
                     </div>
 
-                    {selectedMembershipType && (
-                      <Card className="border-primary/20">
-                        <CardHeader>
-                          <CardTitle className="text-lg flex items-center">
-                            <CreditCard className="w-5 h-5 mr-2" />
-                            Selected Membership
-                          </CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                          <div className="flex justify-between items-center">
-                            <div>
-                              <h4 className="font-semibold">{selectedMembershipType.label}</h4>
-                              <p className="text-sm text-muted-foreground">{selectedMembershipType.description}</p>
-                            </div>
-                            <Badge variant="default" className="text-lg px-4 py-2">
-                              {selectedMembershipType.price}
-                            </Badge>
-                          </div>
-                        </CardContent>
-                      </Card>
-                    )}
+                    <div>
+                      <Label htmlFor="previousPoliticalParty">Previous Political Party (if any)</Label>
+                      <Input
+                        id="previousPoliticalParty"
+                        {...register("previousPoliticalParty")}
+                        className="mt-2"
+                        placeholder="Name of previous political party"
+                      />
+                    </div>
 
-                    {/* Updated ID Pickup Information */}
-                    <Card className="border-primary/20 bg-primary/5">
-                      <CardContent className="p-4">
-                        <div className="flex items-start space-x-3">
-                          <MapPin className="w-5 h-5 text-primary mt-1" />
-                          <div>
-                            <h4 className="font-semibold text-primary">ID Card Pickup Information</h4>
-                            <div className="text-sm text-muted-foreground mt-2 space-y-2">
-                              <p>
-                                <strong>Your membership ID card will be ready for pickup from our Kampala office within 5-7 business days after payment confirmation.</strong>
-                              </p>
-                              <div className="bg-white/50 p-3 rounded border">
-                                <p className="font-medium text-foreground">SPLM Uganda Chapter Office:</p>
-                                <p>Plot 123, Kampala Road</p>
-                                <p>Kampala Central, Uganda</p>
-                                <p><strong>Office Hours:</strong> Monday - Friday, 9:00 AM - 5:00 PM</p>
-                                <p><strong>Contact:</strong> +256 700 000 000</p>
-                              </div>
-                              <p className="text-xs">
-                                You will receive an SMS notification when your ID is ready for collection. 
-                                Please bring a copy of your payment receipt and a valid national ID for verification.
-                              </p>
-                            </div>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
+                    <div>
+                      <Label htmlFor="reasonForLeavingParty">When did you leave that party and why?</Label>
+                      <Textarea
+                        id="reasonForLeavingParty"
+                        {...register("reasonForLeavingParty")}
+                        className="mt-2"
+                        rows={2}
+                        placeholder="Explain when and why you left your previous party"
+                      />
+                    </div>
 
-                    {/* Terms and Conditions */}
-                    <div className="space-y-4">
-                      <div className="flex items-start space-x-3">
-                        <Checkbox
-                          id="agreeToTerms"
-                          onCheckedChange={(checked) => setValue("agreeToTerms", checked as boolean)}
-                        />
-                        <div>
-                          <Label htmlFor="agreeToTerms" className="text-sm font-medium cursor-pointer">
-                            I agree to the Terms and Conditions *
-                          </Label>
-                          <p className="text-xs text-muted-foreground">
-                            I agree to abide by SPLM Uganda Chapter constitution and regulations, and understand that my membership ID must be collected from the Kampala office.
-                          </p>
-                        </div>
-                      </div>
-                      {errors.agreeToTerms && (
-                        <p className="text-destructive text-sm">{errors.agreeToTerms.message}</p>
+                    <div>
+                      <Label htmlFor="splmObjectivesBelief">Did you or do you believe in SPLM Objectives, and why? *</Label>
+                      <Textarea
+                        id="splmObjectivesBelief"
+                        {...register("splmObjectivesBelief")}
+                        className="mt-2"
+                        rows={3}
+                        placeholder="Explain your belief in SPLM objectives"
+                      />
+                      {errors.splmObjectivesBelief && (
+                        <p className="text-destructive text-sm mt-1">{errors.splmObjectivesBelief.message}</p>
                       )}
+                    </div>
 
-                      <div className="flex items-start space-x-3">
-                        <Checkbox
-                          id="agreeToDataProcessing"
-                          onCheckedChange={(checked) => setValue("agreeToDataProcessing", checked as boolean)}
-                        />
-                        <div>
-                          <Label htmlFor="agreeToDataProcessing" className="text-sm font-medium cursor-pointer">
-                            I consent to data processing and pickup notifications *
-                          </Label>
-                          <p className="text-xs text-muted-foreground">
-                            Your data will be used for membership management and you will be notified via SMS when your ID is ready for pickup.
-                          </p>
-                        </div>
-                      </div>
-                      {errors.agreeToDataProcessing && (
-                        <p className="text-destructive text-sm">{errors.agreeToDataProcessing.message}</p>
+                    <div>
+                      <Label htmlFor="readyToServe">Are you ready to serve the SPLM at any time you are called upon? *</Label>
+                      <Select onValueChange={(value) => setValue("readyToServe", value)}>
+                        <SelectTrigger className="mt-2">
+                          <SelectValue placeholder="Select your answer" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="yes">Yes</SelectItem>
+                          <SelectItem value="no">No</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      {errors.readyToServe && (
+                        <p className="text-destructive text-sm mt-1">{errors.readyToServe.message}</p>
                       )}
                     </div>
 
@@ -573,15 +572,35 @@ const Registration = () => {
                         <div className="flex items-start space-x-3">
                           <Shield className="w-5 h-5 text-primary mt-1" />
                           <div>
-                            <h4 className="font-semibold text-primary">Data Security Notice</h4>
+                            <h4 className="font-semibold text-primary">Application Fee</h4>
                             <p className="text-sm text-muted-foreground mt-1">
-                              Your information is encrypted and securely stored. We follow international data protection standards 
-                              and will never share your information with third parties without your consent.
+                              Registration fee: 40 USD
+                            </p>
+                            <p className="text-xs text-muted-foreground mt-2">
+                              Your membership ID card will be ready for pickup from our Kampala office after approval and payment confirmation.
                             </p>
                           </div>
                         </div>
                       </CardContent>
                     </Card>
+
+                    <div className="flex items-start space-x-3">
+                      <Checkbox
+                        id="agreeToTerms"
+                        onCheckedChange={(checked) => setValue("agreeToTerms", checked as boolean)}
+                      />
+                      <div>
+                        <Label htmlFor="agreeToTerms" className="text-sm font-medium cursor-pointer">
+                          Declaration *
+                        </Label>
+                        <p className="text-xs text-muted-foreground">
+                          I hereby declare that the information provided is true and correct. I understand that any false statements may result in denial or revocation of membership.
+                        </p>
+                      </div>
+                    </div>
+                    {errors.agreeToTerms && (
+                      <p className="text-destructive text-sm">{errors.agreeToTerms.message}</p>
+                    )}
                   </div>
                 )}
 

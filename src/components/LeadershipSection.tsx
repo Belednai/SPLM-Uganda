@@ -73,8 +73,8 @@ const LeadershipSection = () => {
                     alt={leader.name}
                     className="w-24 h-28 object-cover rounded-lg border border-primary/20 bg-white mb-4"
                   />
-                  <h3 className="text-xl font-bold text-primary mb-1 flex items-center justify-center">
-                    <Star className="w-4 h-4 mr-2 text-secondary" />
+                  <h3 className="text-xl font-bold text-primary mb-1 flex items-center justify-center gap-x-2">
+                    <Star className="w-4 h-4 text-secondary" />
                     {leader.name}
                   </h3>
                   <div className="text-sm text-muted-foreground mb-1">{leader.role}</div>

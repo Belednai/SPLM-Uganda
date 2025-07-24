@@ -38,6 +38,21 @@ const MissionValues = () => {
   return (
     <section id="mission" className="py-20 bg-background">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* SPLM Overview, Vision, Mission, Values */}
+        <div className="max-w-4xl mx-auto mb-12 text-center">
+          <p className="text-lg text-foreground mb-4">
+            The Sudan People’s Liberation Movement (SPLM) was founded in 1983 as a political and military movement advocating for greater autonomy and equal rights for the marginalized regions of Sudan, particularly the South. It led the struggle during the Second Sudanese Civil War and played a central role in achieving the 2005 Comprehensive Peace Agreement (CPA), which eventually led to the independence of South Sudan in 2011.
+          </p>
+          <p className="text-lg text-foreground mb-4">
+            <span className="font-semibold">Vision:</span> The vision of the SPLM is to build a peaceful, united, democratic, and prosperous South Sudan, where justice, equality, and human rights are upheld for all citizens.
+          </p>
+          <p className="text-lg text-foreground mb-4">
+            <span className="font-semibold">Mission:</span> The mission of the SPLM is to lead the transformation of South Sudan through effective governance, inclusive political participation, sustainable development, and national unity. It aims to empower the people by fostering peace, stability, and transparency.
+          </p>
+          <p className="text-lg text-foreground">
+            <span className="font-semibold">Core Values:</span> The core values of the SPLM include democracy, justice, equality, freedom, unity in diversity, transparency, and accountability. The party is committed to upholding the dignity and rights of every citizen, promoting inclusive development, and building a strong and sovereign nation.
+          </p>
+        </div>
         {/* Mission Statement */}
         <div className="text-center mb-20">
           <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-8">
