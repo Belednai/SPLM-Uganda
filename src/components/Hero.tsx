@@ -34,9 +34,8 @@ const Hero = () => {
             {/* Founding Information */}
             <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6 border border-white/20">
               <p className="text-white/95 text-lg leading-relaxed">
-                <span className="font-semibold text-secondary">Founded May 16, 1983</span> by 
-                John Garang and Joseph Oduho, the Sudan People's Liberation Movement continues 
-                its mission of democratic governance, human rights, and unity across borders.
+                <span className="font-semibold text-secondary">Founded May 16, 1983</span> under the leadership of 
+                Dr. John Garang de Mabior following the Bor Mutiny in response to President Nimeiry's oppressive policies.
               </p>
             </div>
 

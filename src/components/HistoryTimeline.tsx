@@ -1,6 +1,6 @@
 import { Calendar, Users, Award, Globe, Shield, Target, Handshake } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
-import drJohnGarang from "@/assets/Dr. John Garang De Mabior.jpeg";
+import drJohnGarang from "@/assets/Dr. John Garang De Mabior.png";
 
 const HistoryTimeline = () => {
   const timelineEvents = [
@@ -8,14 +8,14 @@ const HistoryTimeline = () => {
       year: "1983",
       date: "May 16",
       title: "SPLM/SPLA Founded",
-      description: "Dr. John Garang de Mabior with those of Joseph Oduho establish the Sudan People's Liberation Movement (SPLM) and Sudan People's Liberation Army (SPLA) as the political and military wings to resist Sudan's central government. Initially adopted Marxist-Leninist ideology.",
+      description: "The Sudan People's Liberation Movement (SPLM) and its armed wing, the Sudan People's Liberation Army (SPLA), were founded in 1983 under the leadership of Dr. John Garang de Mabior following the Bor Mutiny of May 16, 1983. The rebellion emerged after President Jaafar Nimeiry revoked southern autonomy, imposed Sharia law, and attempted to transfer southern troops north.",
       icon: Users,
       highlight: true
     },
     {
       year: "1983-1991",
       title: "Ethiopian Alliance Period",
-      description: "SPLM/SPLA receives extensive support from Mengistu Haile Mariam's Ethiopia, establishing bases and training camps. Movement evolves from Marxist-Leninist to broadly socialist platform during this period.",
+      description: "Following the Bor Mutiny and formation after Nimeiry's oppressive policies, SPLM/SPLA receives extensive support from Mengistu Haile Mariam's Ethiopia, establishing bases and training camps. Movement evolves from initial revolutionary platform to broadly socialist ideology during this period.",
       icon: Shield,
       highlight: false
     },
@@ -80,7 +80,7 @@ const HistoryTimeline = () => {
             Our <span className="text-primary">Liberation</span> Legacy
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            From the founding moments of May 16, 1983 to today's diaspora communities, 
+            Founded May 16, 1983 under Dr. John Garang de Mabior's leadership following the Bor Mutiny, 
             SPLM has remained committed to democratic ideals, human rights, and the vision of a united, secular Sudan.
           </p>
         </div>
@@ -95,11 +95,7 @@ const HistoryTimeline = () => {
                     Founding Fathers of Liberation
                   </h3>
                   <p className="text-muted-foreground text-lg leading-relaxed mb-6">
-                    <span className="font-semibold text-foreground">Dr. John Garang de Mabior</span> (PhD, Iowa State University) with those of 
-                    <span className="font-semibold text-foreground"> Joseph Oduho</span> established SPLM/SPLA 
-                    on May 16, 1983, with a revolutionary vision of a united, democratic, and secular Sudan where all citizens 
-                    enjoy equal rights regardless of race, religion, or ethnicity. Their movement challenged the marginalization 
-                    of Sudan's periphery and fought for inclusive governance.
+                    The Sudan People's Liberation Movement (SPLM) and its armed wing, the Sudan People's Liberation Army (SPLA), were founded in 1983 under the leadership of <span className="font-semibold text-foreground">Dr. John Garang de Mabior</span> following the Bor Mutiny of May 16, 1983. The rebellion emerged after President Jaafar Nimeiry revoked southern autonomy, imposed Sharia law, and attempted to transfer southern troops north.
                   </p>
                   <div className="mb-4">
                     <h4 className="text-lg font-bold text-primary mb-2">The 12 Founding Fathers of SPLM/SPLA</h4>
