@@ -11,9 +11,9 @@ const Hero = () => {
         <img 
           src={splmHero} 
           alt="SPLM Unity" 
-          className="w-full h-full object-cover blur-sm scale-105"
+          className="w-full h-full object-cover scale-105"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-gray-900/70 to-black/60"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-red-900/80 to-black/85"></div>
       </div>
 
       {/* Hero Content */}
@@ -32,7 +32,7 @@ const Hero = () => {
             </div>
 
             {/* Founding Information */}
-            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6 border border-white/20">
+            <div className="bg-black/40 backdrop-blur-sm rounded-lg p-6 border border-red-800/50">
               <p className="text-white/95 text-lg leading-relaxed">
                 <span className="font-semibold text-secondary">Founded May 16, 1983</span> under the leadership of 
                 Dr. John Garang de Mabior following the Bor Mutiny in response to President Nimeiry's oppressive policies.
@@ -51,7 +51,7 @@ const Hero = () => {
               <Button 
                 variant="outline" 
                 size="lg" 
-                className="w-full sm:w-auto bg-white/10 border-white/30 text-white hover:bg-white/20 hover:text-white"
+                className="w-full sm:w-auto bg-red-900/30 border-red-700/50 text-white hover:bg-red-800/40 hover:text-white"
               >
                 <BookOpen className="w-5 h-5" />
                 Learn Our History
@@ -78,7 +78,7 @@ const Hero = () => {
 
           {/* Right side content could include additional imagery or information */}
           <div className="hidden lg:block">
-            <div className="bg-white/5 backdrop-blur-sm rounded-xl p-8 border border-white/20">
+            <div className="bg-black/50 backdrop-blur-sm rounded-xl p-8 border border-red-800/50">
               <div className="space-y-6">
                 <h3 className="text-2xl font-bold text-white">Join the Movement</h3>
                 <div className="space-y-4">
@@ -109,8 +109,8 @@ const Hero = () => {
       {/* Scroll Indicator */}
       <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-10">
         <div className="animate-bounce">
-          <div className="w-6 h-10 border-2 border-white/40 rounded-full flex justify-center">
-            <div className="w-1 h-3 bg-white/60 rounded-full mt-2 animate-pulse"></div>
+          <div className="w-6 h-10 border-2 border-red-700/60 rounded-full flex justify-center">
+            <div className="w-1 h-3 bg-red-600/80 rounded-full mt-2 animate-pulse"></div>
           </div>
         </div>
       </div>
