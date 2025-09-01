@@ -38,6 +38,18 @@ export function createRedBackgroundPlaceholder(width: number = 200, height: numb
   return canvas.toDataURL();
 }
 
+// Mask ID number for display (only show first 8 characters)
+export function maskMemberId(memberId: string): string {
+  if (!memberId || memberId.length <= 8) return memberId;
+  return memberId.substring(0, 8) + '****';
+}
+
+// Check if user is authenticated as admin
+export function isAdminAuthenticated(): boolean {
+  const token = localStorage.getItem('splm_admin_token');
+  return !!token;
+}
+
 // Simple storage utility for member data (in real app, this would be API calls)
 export const memberStorage = {
   save: (memberId: string, data: any) => {

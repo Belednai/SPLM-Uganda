@@ -30,7 +30,7 @@ All colors MUST be HSL.
     --secondary-foreground: 0 0% 10%;
 
     /* Supporting Colors */
-    --accent: 120 40% 25%;             /* Forest green - South Sudan's wealth */
+    --accent: 15 85% 45%;              /* Rich amber/orange - SPLM official color */
     --accent-foreground: 0 0% 98%;
 
     --muted: 210 15% 95%;
@@ -40,7 +40,7 @@ All colors MUST be HSL.
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 98%;
     
-    --success: 120 60% 40%;
+    --success: 15 85% 45%;              /* SPLM amber/orange for success */
     --success-foreground: 0 0% 98%;
 
     /* Form & Interface Elements */

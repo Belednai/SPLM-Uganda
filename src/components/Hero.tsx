@@ -11,9 +11,9 @@ const Hero = () => {
         <img 
           src={splmHero} 
           alt="SPLM Unity" 
-          className="w-full h-full object-cover"
+          className="w-full h-full object-cover blur-sm scale-105"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-primary/90 via-primary/70 to-transparent"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-gray-900/70 to-black/60"></div>
       </div>
 
       {/* Hero Content */}

@@ -8,14 +8,11 @@ import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 import { 
-  CreditCard, 
   Smartphone, 
   Shield, 
   Clock, 
   CheckCircle,
   ArrowLeft,
-  DollarSign,
-  Receipt,
   IdCard,
   Eye,
   User
@@ -23,13 +20,13 @@ import {
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { Link, useNavigate } from "react-router-dom";
-import { memberStorage } from "@/lib/utils";
+import { memberStorage, maskMemberId, isAdminAuthenticated } from "@/lib/utils";
 import splmLogo from "@/assets/splm-uganda-logo.png";
 import flagLogo from "@/assets/flag-logo.png";
 import logo from "@/assets/logo.png";
 
 const Payment = () => {
-  const [selectedMethod, setSelectedMethod] = useState<string>("");
+  const [selectedMethod, setSelectedMethod] = useState<string>("mobile-money");
   const [processing, setProcessing] = useState(false);
   const [paymentCompleted, setPaymentCompleted] = useState(false);
   const [memberData, setMemberData] = useState<any>(null);
@@ -54,31 +51,10 @@ const Payment = () => {
   const paymentMethods = [
     {
       id: "mobile-money",
-      name: "Mobile Money",
-      description: "Pay with MTN Mobile Money, Airtel Money, or other mobile payment services",
+      name: "MTN MoMo",
+      description: "Pay with MTN Mobile Money service",
       icon: Smartphone,
-      providers: ["MTN Mobile Money", "Airtel Money", "M-Sente", "Centenary Mobile"]
-    },
-    {
-      id: "card",
-      name: "Credit/Debit Card",
-      description: "Pay securely with Visa, MasterCard, or other major cards",
-      icon: CreditCard,
-      providers: ["Visa", "MasterCard", "American Express"]
-    },
-    {
-      id: "paypal",
-      name: "PayPal",
-      description: "Pay with your PayPal account for international transactions",
-      icon: DollarSign,
-      providers: ["PayPal Account", "PayPal Credit"]
-    },
-    {
-      id: "bank-transfer",
-      name: "Bank Transfer",
-      description: "Direct bank transfer to SPLM Uganda Chapter account",
-      icon: Receipt,
-      providers: ["Local Bank Transfer", "Swift Transfer"]
+      providers: ["MTN Mobile Money"]
     }
   ];
 
@@ -190,7 +166,9 @@ const Payment = () => {
                 {/* Member ID */}
                 <div className="">
                   <span className="text-[10px] text-gray-600 font-semibold leading-tight">Member ID:</span>
-                  <span className="ml-1 font-mono text-red-700 font-bold text-xs leading-tight">{memberData.memberId}</span>
+                  <span className="ml-1 font-mono text-red-700 font-bold text-xs leading-tight">
+                    {isAdminAuthenticated() ? memberData.memberId : maskMemberId(memberData.memberId)}
+                  </span>
                 </div>
                 {/* Two-column details */}
                 <div className="grid grid-cols-2 gap-x-4 gap-y-0.5 text-[10px] mt-1">
@@ -220,7 +198,7 @@ const Payment = () => {
                   </div>
                   <div>
                     <span className="text-gray-600 font-semibold">Status:</span>
-                    <span className="ml-1 font-bold text-green-700 uppercase">{memberData.membershipCategory}</span>
+                                            <span className="ml-1 font-bold text-primary uppercase">{memberData.membershipCategory}</span>
                   </div>
                 </div>
               </div>
@@ -244,6 +222,12 @@ const Payment = () => {
           <p className="font-semibold text-red-600 mb-2">⚠️ This is an unofficial preview only</p>
           <p>Your official membership ID card will be available for collection from our Kampala office.</p>
           <p>You will be contacted with pickup instructions within 5-7 business days.</p>
+          {isAdminAuthenticated() && (
+            <div className="mt-3 p-2 bg-blue-50 border border-blue-200 rounded-lg">
+              <p className="text-blue-800 font-medium">🔒 Admin Access: Full member details visible</p>
+              <p className="text-blue-600 text-xs">Regular users will see masked ID numbers</p>
+            </div>
+          )}
         </div>
       </CardContent>
     </Card>
@@ -284,183 +268,61 @@ const Payment = () => {
           </div>
 
           {/* Show ID Preview after payment completion */}
-          {paymentCompleted && <IDPreview memberData={memberData} />}
+          {paymentCompleted && (
+            <>
+              {isAdminAuthenticated() && (
+                <div className="mb-4 text-center">
+                  <Badge variant="outline" className="bg-blue-50 border-blue-200 text-blue-700">
+                    <Eye className="w-3 h-3 mr-1" />
+                    ADMIN VIEW - Full ID Visible
+                  </Badge>
+                </div>
+              )}
+              <IDPreview memberData={memberData} />
+            </>
+          )}
 
           {!paymentCompleted && (
             <div className="grid lg:grid-cols-3 gap-8">
-              {/* Payment Methods */}
+              {/* Payment Form */}
               <div className="lg:col-span-2">
-                <Card className="shadow-xl border-primary/10">
+                <Card className="shadow-lg border-primary/10">
                   <CardHeader>
                     <CardTitle className="flex items-center space-x-3">
-                      <Shield className="w-5 h-5 text-primary" />
-                      Payment Methods
+                      <Smartphone className="w-5 h-5 text-primary" />
+                      MTN MoMo Payment
                     </CardTitle>
-                  </CardHeader>
-                <CardContent className="space-y-4">
-                  {paymentMethods.map((method) => {
-                    const IconComponent = method.icon;
-                    return (
-                      <div
-                        key={method.id}
-                        className={`border rounded-lg p-4 cursor-pointer transition-all duration-200 ${
-                          selectedMethod === method.id
-                            ? 'border-primary bg-primary/5'
-                            : 'border-border hover:border-primary/30'
-                        }`}
-                        onClick={() => setSelectedMethod(method.id)}
-                      >
-                        <div className="flex items-start space-x-4">
-                          <div className={`p-3 rounded-lg ${
-                            selectedMethod === method.id ? 'bg-primary/10' : 'bg-muted'
-                          }`}>
-                            <IconComponent className={`w-6 h-6 ${
-                              selectedMethod === method.id ? 'text-primary' : 'text-muted-foreground'
-                            }`} />
-                          </div>
-                          <div className="flex-1">
-                            <div className="flex items-center justify-between">
-                              <h3 className="font-semibold text-foreground">{method.name}</h3>
-                              <input
-                                type="radio"
-                                checked={selectedMethod === method.id}
-                                onChange={() => setSelectedMethod(method.id)}
-                                className="text-primary"
-                              />
-                            </div>
-                            <p className="text-sm text-muted-foreground mt-1 mb-2">
-                              {method.description}
-                            </p>
-                            <div className="flex flex-wrap gap-2">
-                              {method.providers.map((provider) => (
-                                <Badge key={provider} variant="outline" className="text-xs">
-                                  {provider}
-                                </Badge>
-                              ))}
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </CardContent>
-              </Card>
-
-              {/* Payment Form */}
-              {selectedMethod && (
-                <Card className="mt-6 shadow-lg">
-                  <CardHeader>
-                    <CardTitle className="text-lg">
-                      {selectedPaymentMethod?.name} Details
-                    </CardTitle>
+                    <p className="text-sm text-muted-foreground">
+                      Complete your payment using MTN Mobile Money service
+                    </p>
                   </CardHeader>
                   <CardContent>
-                    {selectedMethod === "mobile-money" && (
-                      <div className="space-y-4">
-                        <div>
-                          <Label htmlFor="provider">Mobile Money Provider</Label>
-                          <Select>
-                            <SelectTrigger className="mt-2">
-                              <SelectValue placeholder="Select your provider" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              <SelectItem value="mtn">MTN Mobile Money</SelectItem>
-                              <SelectItem value="airtel">Airtel Money</SelectItem>
-                              <SelectItem value="msente">M-Sente</SelectItem>
-                              <SelectItem value="centenary">Centenary Mobile</SelectItem>
-                            </SelectContent>
-                          </Select>
-                        </div>
-                        <div>
-                          <Label htmlFor="phone">Phone Number</Label>
-                          <Input
-                            id="phone"
-                            placeholder="+256 700 000 000"
-                            className="mt-2"
-                          />
-                        </div>
+                    <div className="space-y-4">
+                      <div>
+                        <Label htmlFor="provider">Mobile Money Provider</Label>
+                        <Select>
+                          <SelectTrigger className="mt-2">
+                            <SelectValue placeholder="Select your provider" />
+                          </SelectTrigger>
+                                                  <SelectContent>
+                          <SelectItem value="mtn">MTN Mobile Money</SelectItem>
+                        </SelectContent>
+                        </Select>
                       </div>
-                    )}
-
-                    {selectedMethod === "card" && (
-                      <div className="space-y-4">
-                        <div>
-                          <Label htmlFor="cardNumber">Card Number</Label>
-                          <Input
-                            id="cardNumber"
-                            placeholder="1234 5678 9012 3456"
-                            className="mt-2"
-                          />
-                        </div>
-                        <div className="grid grid-cols-2 gap-4">
-                          <div>
-                            <Label htmlFor="expiry">Expiry Date</Label>
-                            <Input
-                              id="expiry"
-                              placeholder="MM/YY"
-                              className="mt-2"
-                            />
-                          </div>
-                          <div>
-                            <Label htmlFor="cvv">CVV</Label>
-                            <Input
-                              id="cvv"
-                              placeholder="123"
-                              className="mt-2"
-                            />
-                          </div>
-                        </div>
-                        <div>
-                          <Label htmlFor="cardName">Cardholder Name</Label>
-                          <Input
-                            id="cardName"
-                            placeholder="Full name on card"
-                            className="mt-2"
-                          />
-                        </div>
+                      <div>
+                        <Label htmlFor="phone">Phone Number</Label>
+                        <Input
+                          id="phone"
+                          placeholder="+256 700 000 000"
+                          className="mt-2"
+                        />
                       </div>
-                    )}
-
-                    {selectedMethod === "paypal" && (
-                      <div className="text-center py-8">
-                        <div className="mb-4">
-                          <DollarSign className="w-16 h-16 text-primary mx-auto mb-4" />
-                          <h3 className="text-lg font-semibold mb-2">PayPal Payment</h3>
-                          <p className="text-muted-foreground">
-                            You will be redirected to PayPal to complete your payment securely
-                          </p>
-                        </div>
-                      </div>
-                    )}
-
-                    {selectedMethod === "bank-transfer" && (
-                      <div className="space-y-4">
-                        <div className="bg-muted p-4 rounded-lg">
-                          <h4 className="font-semibold mb-3">Bank Details</h4>
-                          <div className="space-y-2 text-sm">
-                            <div><strong>Bank:</strong> Stanbic Bank Uganda</div>
-                            <div><strong>Account Name:</strong> SPLM Uganda Chapter</div>
-                            <div><strong>Account Number:</strong> 9030012345678</div>
-                            <div><strong>Swift Code:</strong> SBICUGKX</div>
-                            <div><strong>Reference:</strong> {memberData.memberId}</div>
-                          </div>
-                        </div>
-                        <div>
-                          <Label htmlFor="reference">Transaction Reference</Label>
-                          <Input
-                            id="reference"
-                            placeholder="Enter transaction reference from your bank"
-                            className="mt-2"
-                          />
-                        </div>
-                      </div>
-                    )}
+                    </div>
                   </CardContent>
                 </Card>
-              )}
-            </div>
+              </div>
 
-            {/* Order Summary */}
+              {/* Order Summary */}
             <div>
               <Card className="shadow-xl border-primary/20 sticky top-24">
                 <CardHeader>
@@ -469,14 +331,16 @@ const Payment = () => {
                 <CardContent className="space-y-4">
                   <div>
                     <h4 className="font-semibold text-foreground">{memberData.surname} {memberData.otherNames}</h4>
-                    <p className="text-sm text-muted-foreground">Member ID: {memberData.memberId}</p>
+                    <p className="text-sm text-muted-foreground">
+                      Member ID: {isAdminAuthenticated() ? memberData.memberId : maskMemberId(memberData.memberId)}
+                    </p>
                   </div>
                   
                   <Separator />
                   
                   <div className="flex justify-between">
                     <span className="text-muted-foreground">Membership Type:</span>
-                    <span className="font-medium capitalize">{memberData.membershipCategory} Member</span>
+                    <span className="font-medium">SPLM Uganda Chapter Member</span>
                   </div>
                   
                   <div className="flex justify-between">
@@ -488,7 +352,7 @@ const Payment = () => {
                   
                   <div className="flex justify-between text-lg font-bold">
                     <span>Total Amount:</span>
-                    <span className="text-primary">$40 USD</span>
+                    <span className="text-primary">UGX 30,000</span>
                   </div>
 
                   <div className="space-y-3 pt-4">
@@ -505,10 +369,10 @@ const Payment = () => {
                           Processing Payment...
                         </>
                       ) : (
-                        <>
-                          <CheckCircle className="w-4 h-4" />
-                          Pay $40 USD
-                        </>
+                                              <>
+                        <CheckCircle className="w-4 h-4" />
+                        Pay UGX 30,000
+                      </>
                       )}
                     </Button>
                     
@@ -543,7 +407,7 @@ const Payment = () => {
             <div className="text-center mt-8">
               <Card className="max-w-2xl mx-auto">
                 <CardContent className="p-6">
-                  <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
+                  <CheckCircle className="w-16 h-16 text-primary mx-auto mb-4" />
                   <h3 className="text-2xl font-bold text-foreground mb-2">Welcome to SPLM Uganda Chapter!</h3>
                   <p className="text-muted-foreground mb-4">
                     Your membership registration is now complete. Thank you for joining our liberation movement.

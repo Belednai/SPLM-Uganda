@@ -32,11 +32,12 @@ import {
   Database,
   Loader2,
   Plus,
-  RefreshCw
+  RefreshCw,
+  UserPlus
 } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 const AdminDashboard = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -209,6 +210,12 @@ const AdminDashboard = () => {
               </p>
             </div>
             <div className="flex items-center space-x-3">
+              <Link to="/admin/register">
+                <Button variant="hero" size="sm">
+                  <UserPlus className="w-4 h-4 mr-2" />
+                  New Registration
+                </Button>
+              </Link>
               <Button variant="outline" onClick={fetchDashboardData} disabled={isLoading}>
                 <RefreshCw className={`w-4 h-4 mr-2 ${isLoading ? 'animate-spin' : ''}`} />
                 Refresh
@@ -297,11 +304,11 @@ const AdminDashboard = () => {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm font-medium text-muted-foreground">Ready for Pickup</p>
-                    <p className="text-2xl font-bold text-green-600">
+                    <p className="text-2xl font-bold text-primary">
                       {isLoading ? <Loader2 className="w-6 h-6 animate-spin" /> : stats.idsReadyForPickup}
                     </p>
                   </div>
-                  <CheckCircle className="w-8 h-8 text-green-600" />
+                                        <CheckCircle className="w-8 h-8 text-primary" />
                 </div>
               </CardContent>
             </Card>
@@ -350,6 +357,12 @@ const AdminDashboard = () => {
                   <div className="flex items-center justify-between">
                     <CardTitle>ID Processing & Pickup Management</CardTitle>
                     <div className="flex items-center space-x-2">
+                      <Link to="/admin/register">
+                        <Button variant="outline" size="sm">
+                          <UserPlus className="w-4 h-4" />
+                          Register Cash Payment
+                        </Button>
+                      </Link>
                       <Button variant="outline" size="sm" onClick={handleSendNotifications}>
                         <MessageSquare className="w-4 h-4" />
                         Send Pickup Notifications

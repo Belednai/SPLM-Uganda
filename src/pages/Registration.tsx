@@ -87,10 +87,7 @@ const Registration = () => {
   });
 
   const membershipCategories = [
-    { value: "active", label: "Active" },
-    { value: "ordinary", label: "Ordinary" },
-    { value: "supporter", label: "Supporter" },
-    { value: "sympathizer", label: "Sympathizer" }
+    { value: "member", label: "SPLM Uganda Chapter Member" }
   ];
 
   const constituencies = [
@@ -453,12 +450,12 @@ const Registration = () => {
                         )}
                       </div>
                       <div>
-                        <Label htmlFor="country">Country *</Label>
+                        <Label htmlFor="country">County *</Label>
                         <Input
                           id="country"
                           {...register("country")}
                           className="mt-2"
-                          placeholder="Your country in South Sudan"
+                          placeholder="Your county in South Sudan"
                         />
                         {errors.country && (
                           <p className="text-destructive text-sm mt-1">{errors.country.message}</p>
@@ -560,18 +557,17 @@ const Registration = () => {
                   <div className="space-y-6">
                     <div>
                       <Label>Membership Category *</Label>
-                      <div className="mt-4 space-y-4">
-                        {membershipCategories.map((category) => (
-                          <div key={category.value} className="flex items-center space-x-3">
-                            <input
-                              type="radio"
-                              {...register("membershipCategory")}
-                              value={category.value}
-                              className="text-primary"
-                            />
-                            <Label>{category.label}</Label>
-                          </div>
-                        ))}
+                      <div className="mt-4">
+                        <div className="flex items-center space-x-3 p-4 bg-primary/5 border border-primary/20 rounded-lg">
+                          <input
+                            type="radio"
+                            {...register("membershipCategory")}
+                            value="member"
+                            className="text-primary"
+                            defaultChecked
+                          />
+                          <Label className="font-medium">SPLM Uganda Chapter Member</Label>
+                        </div>
                       </div>
                       {errors.membershipCategory && (
                         <p className="text-destructive text-sm mt-1">{errors.membershipCategory.message}</p>
@@ -636,7 +632,7 @@ const Registration = () => {
                           <div>
                             <h4 className="font-semibold text-primary">Application Fee</h4>
                             <p className="text-sm text-muted-foreground mt-1">
-                              Registration fee: 40 USD
+                              Registration fee: UGX 30,000
                             </p>
                             <p className="text-xs text-muted-foreground mt-2">
                               Your membership ID card will be ready for pickup from our Kampala office after approval and payment confirmation.

@@ -17,13 +17,13 @@ import {
 } from "lucide-react";
 
 const MembershipSection = () => {
-  const [selectedPlan, setSelectedPlan] = useState("standard");
+  const [selectedPlan, setSelectedPlan] = useState("member");
 
   const membershipPlans = [
     {
-      id: "standard",
-      name: "Standard Membership",
-      price: "UGX 50,000",
+      id: "member",
+      name: "SPLM Uganda Chapter Membership",
+      price: "UGX 30,000",
       period: "Annual",
       description: "Full SPLM Uganda Chapter membership with all benefits",
       features: [
@@ -32,44 +32,12 @@ const MembershipSection = () => {
         "Voting rights in chapter elections",
         "Digital membership certificate",
         "Access to member resources",
-        "Newsletter and updates"
-      ],
-      badge: "Most Popular",
-      highlight: true
-    },
-    {
-      id: "supporter",
-      name: "Supporter Membership",
-      price: "UGX 25,000",
-      period: "Annual",
-      description: "Support the movement with limited participation rights",
-      features: [
-        "Supporter ID card",
-        "Access to public meetings",
         "Newsletter and updates",
-        "Digital certificate",
-        "Community network access"
+        "Community network access",
+        "Historical documentation access"
       ],
-      badge: null,
-      highlight: false
-    },
-    {
-      id: "lifetime",
-      name: "Lifetime Membership",
-      price: "UGX 200,000",
-      period: "One-time",
-      description: "Permanent membership with exclusive benefits",
-      features: [
-        "Premium membership ID card",
-        "Lifetime voting rights",
-        "Priority in chapter positions",
-        "Exclusive member events",
-        "Historical documentation access",
-        "Legacy member recognition",
-        "Transfer to family members"
-      ],
-      badge: "Premium",
-      highlight: false
+      badge: "Standard Membership",
+      highlight: true
     }
   ];
 
@@ -146,7 +114,8 @@ const MembershipSection = () => {
           <h3 className="text-3xl font-bold text-center text-foreground mb-12">
             Choose Your <span className="text-secondary">Membership</span>
           </h3>
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="flex justify-center">
+            <div className="max-w-md">
             {membershipPlans.map((plan) => (
               <Card 
                 key={plan.id}
@@ -204,6 +173,7 @@ const MembershipSection = () => {
                 </CardContent>
               </Card>
             ))}
+            </div>
           </div>
         </div>
 
